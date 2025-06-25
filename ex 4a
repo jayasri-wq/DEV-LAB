@@ -1,92 +1,33 @@
-{
-  "nbformat": 4,
-  "nbformat_minor": 0,
-  "metadata": {
-    "colab": {
-      "provenance": [],
-      "authorship_tag": "ABX9TyPsuADrBvDrt+82j9td2zEr",
-      "include_colab_link": true
-    },
-    "kernelspec": {
-      "name": "python3",
-      "display_name": "Python 3"
-    },
-    "language_info": {
-      "name": "python"
-    }
-  },
-  "cells": [
-    {
-      "cell_type": "markdown",
-      "metadata": {
-        "id": "view-in-github",
-        "colab_type": "text"
-      },
-      "source": [
-        "<a href=\"https://colab.research.google.com/github/jayasri-wq/DEV-LAB/blob/main/ex%204a\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
-      ]
-    },
-    {
-      "cell_type": "code",
-      "execution_count": 1,
-      "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        },
-        "id": "eusdy7a_Vj5t",
-        "outputId": "98c6f464-2310-44ff-edad-d4b392fc3959"
-      },
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "Monthly Temperature Summary:\n",
-            " Month    August  July  June  Summer_Total\n",
-            "City                                     \n",
-            "Chennai    36.0  37.0  38.0         111.0\n",
-            "Delhi       0.0  41.0  82.0         123.0\n",
-            "Mumbai     67.0  35.0   0.0         102.0\n",
-            "\n",
-            "City with the highest total summer temperature: Delhi\n"
-          ]
-        }
-      ],
-      "source": [
-        "import pandas as pd\n",
-        "\n",
-        "# Step 1: Sample temperature data\n",
-        "data = {\n",
-        "    'City': ['Chennai', 'Delhi', 'Chennai', 'Delhi', 'Mumbai', 'Mumbai', 'Delhi', 'Chennai', 'Mumbai'],\n",
-        "    'Date': ['2023-06-07', '2023-06-14', '2023-07-05', '2023-07-12', '2023-08-01',\n",
-        "             '2023-08-15', '2023-06-21', '2023-08-25', '2023-07-20'],\n",
-        "    'Temperature': [38, 42, 37, 41, 34, 33, 40, 36, 35]\n",
-        "}\n",
-        "\n",
-        "# Step 2: Create DataFrame\n",
-        "df = pd.DataFrame(data)\n",
-        "\n",
-        "# Step 3: Convert 'Date' to datetime and extract 'Month'\n",
-        "df['Date'] = pd.to_datetime(df['Date'])\n",
-        "df['Month'] = df['Date'].dt.month_name()\n",
-        "\n",
-        "# Step 4: Group by City and Month to calculate total temperature\n",
-        "grouped = df.groupby(['City', 'Month'])['Temperature'].sum().reset_index()\n",
-        "\n",
-        "# Step 5: Pivot the data\n",
-        "pivot_table = grouped.pivot(index='City', columns='Month', values='Temperature').fillna(0)\n",
-        "\n",
-        "# Step 6: Calculate summer total (June, July, August)\n",
-        "summer_months = ['June', 'July', 'August']\n",
-        "pivot_table['Summer_Total'] = pivot_table[summer_months].sum(axis=1)\n",
-        "\n",
-        "# Step 7: Identify city with highest summer temperature total\n",
-        "top_city = pivot_table['Summer_Total'].idxmax()\n",
-        "\n",
-        "# Output\n",
-        "print(\"Monthly Temperature Summary:\\n\", pivot_table)\n",
-        "print(\"\\nCity with the highest total summer temperature:\", top_city)\n"
-      ]
-    }
-  ]
+import pandas as pd
+
+# Step 1: Sample temperature data
+data = {
+    'City': ['Chennai', 'Delhi', 'Chennai', 'Delhi', 'Mumbai', 'Mumbai', 'Delhi', 'Chennai', 'Mumbai'],
+    'Date': ['2023-06-07', '2023-06-14', '2023-07-05', '2023-07-12', '2023-08-01',
+             '2023-08-15', '2023-06-21', '2023-08-25', '2023-07-20'],
+    'Temperature': [38, 42, 37, 41, 34, 33, 40, 36, 35]
 }
+
+# Step 2: Create DataFrame
+df = pd.DataFrame(data)
+
+# Step 3: Convert 'Date' to datetime and extract 'Month'
+df['Date'] = pd.to_datetime(df['Date'])
+df['Month'] = df['Date'].dt.month_name()
+
+# Step 4: Group by City and Month to calculate total temperature
+grouped = df.groupby(['City', 'Month'])['Temperature'].sum().reset_index()
+
+# Step 5: Pivot the data
+pivot_table = grouped.pivot(index='City', columns='Month', values='Temperature').fillna(0)
+
+# Step 6: Calculate summer total (June, July, August)
+summer_months = ['June', 'July', 'August']
+pivot_table['Summer_Total'] = pivot_table[summer_months].sum(axis=1)
+
+# Step 7: Identify city with highest summer temperature total
+top_city = pivot_table['Summer_Total'].idxmax()
+
+# Output
+print("Monthly Temperature Summary:\n", pivot_table)
+print("\nCity with the highest total summer temperature:", top_city)
