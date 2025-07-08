@@ -1,0 +1,65 @@
+# Import required libraries
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Load the Titanic dataset
+df = sns.load_dataset("titanic")
+
+# Display first few rows of the dataset
+print(df.head())
+
+# Set Seaborn style
+sns.set(style="darkgrid")
+
+# 1. Count Plot – Survivors by Gender
+plt.figure(figsize=(6, 4))
+sns.countplot(data=df, x='sex', hue='survived', palette='Set1')
+plt.title('Survivors by Gender')
+plt.xlabel('Gender')
+plt.ylabel('Count')
+plt.legend(title='Survived', labels=['No', 'Yes'])
+plt.tight_layout()
+plt.show()
+
+# 2. Bar Plot – Survival Rate by Class
+plt.figure(figsize=(6, 4))
+sns.barplot(data=df, x='pclass', y='survived', palette='Set2', ci=None)
+plt.title('Survival Rate by Passenger Class')
+plt.xlabel('Passenger Class')
+plt.ylabel('Survival Rate')
+plt.tight_layout()
+plt.show()
+
+# 3. Box Plot – Age Distribution by Class
+plt.figure(figsize=(6, 4))
+sns.boxplot(data=df, x='pclass', y='age', palette='Set3')
+plt.title('Age Distribution by Class')
+plt.xlabel('Passenger Class')
+plt.ylabel('Age')
+plt.tight_layout()
+plt.show()
+
+# 4. Violin Plot – Age and Survival by Gender
+plt.figure(figsize=(6, 4))
+sns.violinplot(data=df, x='sex', y='age', hue='survived', split=True, palette='Pastel1')
+plt.title('Age Distribution and Survival by Gender')
+plt.xlabel('Gender')
+plt.ylabel('Age')
+plt.legend(title='Survived', labels=['No', 'Yes'])
+plt.tight_layout()
+plt.show()
+
+# 5. Heatmap – Correlation Matrix
+plt.figure(figsize=(6, 4))
+corr_matrix = df.corr(numeric_only=True)
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
+plt.title('Correlation Heatmap')
+plt.tight_layout()
+plt.show()
+
+# 6. Pairplot – Selected Features
+selected_features = df[['survived', 'age', 'fare', 'pclass']].dropna()
+sns.pairplot(selected_features, hue='survived', palette='husl')
+plt.suptitle("Pair Plot of Age, Fare, Pclass & Survival", y=1.02)
+plt.show()
